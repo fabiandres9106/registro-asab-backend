@@ -16,14 +16,16 @@ class SurveyResponse(models.Model):
     edad = models.CharField(max_length=10, blank=True, null=True)
     genero = models.CharField(max_length=50, blank=True, null=True)
     localidad = models.CharField(max_length=50, blank=True, null=True)
+    municipio_aledano = models.CharField(max_length=50, blank=True, null=True)
     nivel_educativo = models.CharField(max_length=50, blank=True, null=True)
     perfil_ocupacional = models.CharField(max_length=50, blank=True, null=True)
     vinculacion_teatral = models.CharField(max_length=50, blank=True, null=True)
     motivations = models.JSONField(blank=True, null=True)
+    otras_motivaciones = models.CharField(max_length=255, blank=True, null=True)
     medio_informacion = models.CharField(max_length=50, default='Desconocido', blank=True, null=True)
     otros_eventos = models.JSONField(default=list, blank=True, null=True)
-    comprension_datos = models.BooleanField(default=False)  # Campo añadido anteriormente
-    politica_datos = models.BooleanField(default=False)  # Nuevo campo
+    comprension_datos = models.BooleanField(default=False)
+    politica_datos = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     ticket_number = models.IntegerField(unique=True, null=True, blank=True)
     function = models.ForeignKey(Function, on_delete=models.CASCADE, default=1)
@@ -35,7 +37,7 @@ class SurveyResponse(models.Model):
 
     def generate_unique_ticket_number(self):
         while True:
-            ticket_number = random.randint(100000, 999999)  # Genera un número de 6 dígitos
+            ticket_number = random.randint(100000, 999999)
             if not SurveyResponse.objects.filter(ticket_number=ticket_number).exists():
                 return ticket_number
 

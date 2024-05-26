@@ -29,14 +29,16 @@ class SurveyResponseCreate(generics.CreateAPIView):
             edad=data.get('edad', ''),
             genero=data.get('genero', ''),
             localidad=data.get('localidad', ''),
+            municipio_aledano=data.get('municipio_aledano', ''),
             nivel_educativo=data.get('nivel_educativo', ''),
             perfil_ocupacional=data.get('perfil_ocupacional', ''),
             vinculacion_teatral=data.get('vinculacion_teatral', ''),
             motivations=data.get('motivations', {}),
+            otras_motivaciones=data.get('otras_motivaciones', ''),
             medio_informacion=data.get('medio_informacion', 'Desconocido'),
             otros_eventos=data.get('otros_eventos', []),
             comprension_datos=data.get('comprension_datos', False) == ["true"],
-            politica_datos=data.get('aceptacion_politica', False) == ["true"],
+            politica_datos=data.get('politica_datos', False) == ["true"],
             function=function
         )
         response.save()

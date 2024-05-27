@@ -2,9 +2,11 @@ from rest_framework import serializers
 from .models import Function, SurveyResponse
 
 class FunctionSerializer(serializers.ModelSerializer):
+    date_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
+
     class Meta:
         model = Function
-        fields = ['id', 'date', 'available_tickets']
+        fields = ['id', 'date_time', 'available_tickets']
 
 class SurveyResponseSerializer(serializers.ModelSerializer):
     class Meta:

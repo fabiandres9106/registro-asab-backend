@@ -3,11 +3,11 @@ from django.utils.timezone import now
 import random
 
 class Function(models.Model):
-    date = models.DateTimeField()
+    date_time = models.DateTimeField()  # Usar DateTimeField para fecha y hora
     available_tickets = models.PositiveIntegerField(default=85)
 
     def __str__(self):
-        return f"Function on {self.date_time.strftime('%Y-%m-%d %I:%M %p')} - Tickets available: {self.available_tickets}"
+        return self.date_time.strftime('%Y-%m-%d %I:%M %p')
 
 class SurveyResponse(models.Model):
     id = models.AutoField(primary_key=True)

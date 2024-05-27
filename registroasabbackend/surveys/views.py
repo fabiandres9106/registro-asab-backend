@@ -1,9 +1,16 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
+from rest_framework import status
 from django.http import JsonResponse, HttpResponseBadRequest
 from .models import Function, SurveyResponse
 from .serializers import FunctionSerializer, SurveyResponseSerializer
+from datetime import datetime
+
+class FunctionViewSet(viewsets.ModelViewSet):
+    queryset = Function.objects.all()  # Asegúrate de que aquí no se esté utilizando 'date'
+    serializer_class = FunctionSerializer
 
 class FunctionList(generics.ListAPIView):
     queryset = Function.objects.filter(available_tickets__gt=0)
@@ -15,8 +22,16 @@ class SurveyResponseCreate(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        function_date = data.get('function_date')
-        function = Function.objects.filter(date=function_date).first()
+
+        function_id = data.get('function_date')
+        
+        try:
+            function_date = Function.objects.get(id=function_id)
+            print(function_date)
+        except ValueError:
+            return HttpResponseBadRequest("Invalid function date format. Use 'YYYY-MM-DDTHH:MM:SS' format.")
+
+        function = function_date
         
         if not function:
             return HttpResponseBadRequest("Invalid function date.")

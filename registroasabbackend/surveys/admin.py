@@ -1,21 +1,20 @@
 from django.contrib import admin
 from .models import Function, SurveyResponse
+from django.utils.timezone import localtime
 
 class SurveyResponseAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'nombre', 'correo', 'edad', 'genero', 'localidad', 'municipio_aledano',
-        'nivel_educativo', 'perfil_ocupacional', 'vinculacion_teatral', 'motivations', 'otras_motivaciones',
-        'medio_informacion', 'otros_eventos', 'comprension_datos', 'politica_datos',
-        'created_at', 'ticket_number', 'function'
-    )
-    list_filter = ('localidad', 'nivel_educativo', 'perfil_ocupacional', 'genero', 'function')
-    search_fields = ('nombre', 'correo', 'ticket_number')
-    readonly_fields = ('created_at', 'ticket_number')
+    list_display = ('id', 'nombre', 'correo', 'edad', 'genero', 'localidad', 'formatted_function_date_time')
+
+    def formatted_function_date_time(self, obj):
+        return localtime(obj.function.date_time).strftime('%Y-%m-%d %I:%M %p')
+    formatted_function_date_time.short_description = 'Function Date Time'
+    
 
 class FunctionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date', 'available_tickets')
-    list_filter = ('date',)
-    search_fields = ('date',)
+    list_display = ('id', 'formatted_date_time', 'available_tickets')
+    def formatted_date_time(self, obj):
+        return localtime(obj.date_time).strftime('%Y-%m-%d %I:%M %p')
+    formatted_date_time.short_description = 'Date Time'
 
 admin.site.register(Function, FunctionAdmin)
 admin.site.register(SurveyResponse, SurveyResponseAdmin)

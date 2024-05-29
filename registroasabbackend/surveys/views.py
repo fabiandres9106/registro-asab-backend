@@ -8,6 +8,9 @@ from .models import Function, SurveyResponse
 from .serializers import FunctionSerializer, SurveyResponseSerializer
 from datetime import datetime
 
+def hola_mundo(request):
+    return JsonResponse({"mensaje": "hola_mundo"})
+
 class FunctionViewSet(viewsets.ModelViewSet):
     queryset = Function.objects.all()  # Asegúrate de que aquí no se esté utilizando 'date'
     serializer_class = FunctionSerializer

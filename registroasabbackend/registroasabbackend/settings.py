@@ -130,5 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # URL del frontend de React
     "https://api.cajanegrateatro.com.co",  # URL del dominio de producción
-
+    "https://registro.cajanegrateatro.com.co"
 ]

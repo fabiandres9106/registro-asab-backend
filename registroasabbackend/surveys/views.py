@@ -68,3 +68,18 @@ class SurveyResponseCreate(generics.CreateAPIView):
 class SurveyResponseList(generics.ListAPIView):
     queryset = SurveyResponse.objects.all()
     serializer_class = SurveyResponseSerializer
+
+class FunctionListView(generics.ListAPIView):
+    queryset = Function.objects.all()
+    serializer_class = FunctionSerializer
+
+class SurveyResponseListView(generics.ListAPIView):
+    serializer_class = SurveyResponseSerializer
+
+    def get_queryset(self):
+        function_id = self.kwargs['function_id']
+        return SurveyResponse.objects.filter(function_id=function_id)
+    
+class SurveyResponseDetailView(generics.RetrieveAPIView):
+    queryset = SurveyResponse.objects.all()
+    serializer_class = SurveyResponseSerializer

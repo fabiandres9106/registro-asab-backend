@@ -25,6 +25,9 @@ class Event(models.Model):
 
     def __str__(self):
         return self.nombre_evento
+    
+    def event_dates_count(self):
+        return EventDate.objects.filter(event=self).count()
 
 
 class EventDate(models.Model):
@@ -86,5 +89,6 @@ class Ticket(models.Model):
             ticket_number = random.randint(100000, 999999)
             if not Ticket.objects.filter(ticket_number=ticket_number).exists():
                 return ticket_number
+            
     def __str__(self):
         return f"Ticket {self.ticket_number}: {self.person.nombre}"

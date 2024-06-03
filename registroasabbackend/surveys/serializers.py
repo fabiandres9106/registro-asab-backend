@@ -8,12 +8,19 @@ class PersonSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     teatro = serializers.StringRelatedField()
+    event_dates_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = '__all__'
 
+    def get_event_dates_count(self, obj):
+        return obj.event_dates_count()
+
 class TicketSerializer(serializers.ModelSerializer):
+    person = PersonSerializer(read_only=True)
+    event = EventSerializer(read_only=True)
+
     class Meta:
         model = Ticket
         fields = '__all__'

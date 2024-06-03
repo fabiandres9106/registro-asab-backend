@@ -15,32 +15,32 @@ class EventListView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
-class EventDateListView(generics.ListAPIView):
-    queryset = EventDate.objects.all()
+class EventDateListView(generics.ListAPIView):    
     serializer_class = EventDateSerializer
+
+    def get_queryset(self):
+        event_id = self.kwargs['event_id']
+        return EventDate.objects.filter(event_id=event_id)
 
 class PersonListView(generics.ListCreateAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
+class PersonDetailView(generics.RetrieveAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
 class TicketListView(generics.ListCreateAPIView):
+    serializer_class = TicketSerializer
+
+    def get_queryset(self):
+        event_date = self.kwargs['event_date']
+        return Ticket.objects.filter(event_date=event_date)
+    
+class TicketDetailView(generics.RetrieveAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
-class UpdateAttendanceView(generics.UpdateAPIView):
+class TicketUpdateView(generics.UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        attended = request.data.get('attended', False)
-        instance.attended = attended
-        instance.save()
-
-        if attended:
-            instance.function.available_tickets -= 1
-        else:
-            instance.function.available_tickets += 1
-
-        instance.function.save()
-        return Response({'status': 'attendance updated'}, status=status.HTTP_200_OK)

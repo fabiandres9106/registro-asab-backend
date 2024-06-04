@@ -1,5 +1,17 @@
 from rest_framework import serializers
 from .models import Person, Ticket, Theater, Event, EventDate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Agregar roles al token
+        token['roles'] = [group.name for group in user.groups.all()]
+        token['username'] = user.username
+
+        return token
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:

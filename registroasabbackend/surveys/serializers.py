@@ -44,6 +44,8 @@ class TheaterSerializer(serializers.ModelSerializer):
 
 class EventDateSerializer(serializers.ModelSerializer):
     tickets_not_reserved = serializers.SerializerMethodField()
+    tickets_reserved = serializers.SerializerMethodField()
+    tickets_checkin = serializers.SerializerMethodField()
 
     class Meta:
         model = EventDate
@@ -51,3 +53,9 @@ class EventDateSerializer(serializers.ModelSerializer):
 
     def get_tickets_not_reserved(self, obj):
         return obj.tickets_not_reserved()
+    
+    def get_tickets_reserved(self, obj):
+        return obj.tickets_reserved()
+    
+    def get_tickets_checkin(self, obj):
+        return obj.tickets_checkin()

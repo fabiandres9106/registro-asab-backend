@@ -47,6 +47,13 @@ class EventDate(models.Model):
     def tickets_not_reserved(self):
         reserved_tickets = Ticket.objects.filter(event_date=self).count()
         return self.available_tickets -  reserved_tickets
+    
+    def tickets_reserved(self):
+        return Ticket.objects.filter(event_date=self).count()
+    
+    def tickets_checkin(self):
+        checkin_tickets = Ticket.objects.filter(event_date=self, check_in=True).count()
+        return checkin_tickets
 
 
 class Person(models.Model):

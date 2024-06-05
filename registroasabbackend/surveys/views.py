@@ -28,6 +28,11 @@ class EventDateListView(generics.ListAPIView):
     def get_queryset(self):
         event_id = self.kwargs['event_id']
         return EventDate.objects.filter(event_id=event_id)
+    
+class EventDateDetailView(generics.RetrieveAPIView):
+    queryset = EventDate.objects.all()
+    serializer_class = EventDateSerializer
+    permission_classes = [permissions.AllowAny]
 
 class PersonListView(generics.ListCreateAPIView):
     queryset = Person.objects.all()
@@ -73,3 +78,4 @@ class TicketDetailView(generics.RetrieveAPIView):
 class TicketUpdateView(generics.UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    permission_classes = [permissions.AllowAny] #Hace falta definir los roles los cuales tienen permitido hacer Update

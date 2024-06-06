@@ -162,3 +162,12 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'publicos.virtualidadyproyectossas.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'noreply@publicos.virtualidadyproyectossas.com'
+EMAIL_HOST_PASSWORD = 'Publicos.123'
+DEFAULT_FROM_EMAIL = 'noreply@publicos.virtualidadyproyectossas.com'

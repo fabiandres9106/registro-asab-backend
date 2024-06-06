@@ -9,6 +9,13 @@ from .serializers import EventSerializer, EventDateSerializer, PersonSerializer,
 from datetime import datetime
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
+import csv
+from django.http import HttpResponse
+import locale
+from babel.dates import format_datetime
+from pytz import timezone
+from .utils import send_confirmation_email
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -86,3 +93,42 @@ class TicketUpdateView(generics.UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     permission_classes = [permissions.AllowAny] #Hace falta definir los roles los cuales tienen permitido hacer Update
+
+def export_tickets_csv(request):
+    # Crear una respuesta HTTP con el tipo de contenido CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="tickets.csv"'
+
+    writer = csv.writer(response)
+    # Escribir la cabecera del CSV
+    writer.writerow(['Nombre', 'Correo', 'Edad', 'Genero', 'Localidad', 'Municipio Aledaño', 'Nivel Educativo', 'Perfil Ocupacional', 'Vinculacion Teatral', 'Motivaciones', 'Otras Motivaciones', 'Medio Informacion', 'Otros Eventos', 'Comprension Datos', 'Politica Datos', 'Numero de Ticket', 'Fecha de Funcion'])
+    permission_classes = [permissions.AllowAny] #Hace falta definir los roles los cuales tienen permitido hacer Update
+
+    # Obtener todos los tickets y escribir los datos en el CSV
+    tickets = Ticket.objects.select_related('person', 'event_date')
+    for ticket in tickets:
+        # Formatear la fecha
+        date_time = ticket.event_date.date_time.astimezone(timezone('America/Bogota'))
+        formatted_date = format_datetime(date_time, "d 'de' MMMM, h:mm a", locale='es')
+
+        writer.writerow([
+            ticket.person.nombre,
+            ticket.person.correo,
+            ticket.person.edad,
+            ticket.person.genero,
+            ticket.person.localidad,
+            ticket.person.municipio_aledano,
+            ticket.person.nivel_educativo,
+            ticket.person.perfil_ocupacional,
+            ticket.person.vinculacion_teatral,
+            ticket.person.motivations,
+            ticket.person.otras_motivaciones,
+            ticket.person.medio_informacion,
+            ticket.person.otros_eventos,
+            ticket.person.comprension_datos,
+            ticket.person.politica_datos,
+            ticket.ticket_number,
+            formatted_date,
+        ])
+
+    return response

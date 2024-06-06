@@ -2,6 +2,7 @@ from django.urls import path
 from .views import EventListView, EventDateListView, PersonListView, PersonDetailView, TicketListView, TicketDetailView, TicketUpdateView, EventDetailView, EventDateDetailView, hola_mundo
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import CustomTokenObtainPairView  # Importa la vista personalizada
+from .views import export_tickets_csv
 
 urlpatterns = [
     path('hola/', hola_mundo),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('api/persons/', PersonListView.as_view(), name='person-list'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),  # Usa la vista personalizada
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('export/tickets/', export_tickets_csv, name='export_tickets_csv'),
     # Otras rutas...
 ]

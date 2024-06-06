@@ -21,6 +21,11 @@ class EventListView(generics.ListAPIView):
     serializer_class = EventSerializer
     permission_classes = [permissions.AllowAny]
 
+class EventDetailView(generics.RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [permissions.AllowAny]
+
 class EventDateListView(generics.ListAPIView):    
     serializer_class = EventDateSerializer
     permission_classes = [permissions.AllowAny]
@@ -42,6 +47,7 @@ class PersonListView(generics.ListCreateAPIView):
 class PersonDetailView(generics.RetrieveAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    permission_classes = [permissions.AllowAny]
 
 class TicketListView(generics.ListCreateAPIView):
     serializer_class = TicketSerializer
@@ -74,6 +80,7 @@ class TicketListView(generics.ListCreateAPIView):
 class TicketDetailView(generics.RetrieveAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+    permission_classes = [permissions.AllowAny]
 
 class TicketUpdateView(generics.UpdateAPIView):
     queryset = Ticket.objects.all()

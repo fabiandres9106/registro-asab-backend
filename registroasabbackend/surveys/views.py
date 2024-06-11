@@ -101,7 +101,7 @@ def export_tickets_csv(request):
 
     writer = csv.writer(response)
     # Escribir la cabecera del CSV
-    writer.writerow(['Nombre', 'Correo', 'Edad', 'Genero', 'Localidad', 'Municipio Aledaño', 'Nivel Educativo', 'Perfil Ocupacional', 'Vinculacion Teatral', 'Motivaciones', 'Otras Motivaciones', 'Medio Informacion', 'Otros Eventos', 'Comprension Datos', 'Politica Datos', 'Numero de Ticket', 'Fecha de Funcion'])
+    writer.writerow(['Nombre', 'Correo', 'Edad', 'Genero', 'Localidad', 'Municipio Aledaño', 'Nivel Educativo', 'Perfil Ocupacional', 'Vinculacion Teatral', 'Motivaciones', 'Otras Motivaciones', 'Medio Informacion', 'Otros Eventos', 'Comprension Datos', 'Politica Datos', 'Numero de Ticket', 'Fecha de Funcion', 'Check-in'])
     permission_classes = [permissions.AllowAny] #Hace falta definir los roles los cuales tienen permitido hacer Update
 
     # Obtener todos los tickets y escribir los datos en el CSV
@@ -125,10 +125,11 @@ def export_tickets_csv(request):
             ticket.person.otras_motivaciones,
             ticket.person.medio_informacion,
             ticket.person.otros_eventos,
-            ticket.person.comprension_datos,
-            ticket.person.politica_datos,
-            ticket.ticket_number,
+            'Sí' if ticket.person.comprension_datos else 'No',
+            'Sí' if ticket.person.politica_datos else 'No',
             formatted_date,
+            ticket.ticket_number,
+            'Sí' if ticket.check_in else 'No',  # Añadir columna de asistencia
         ])
 
     return response
